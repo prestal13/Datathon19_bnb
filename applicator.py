@@ -65,16 +65,15 @@ class StaticParams():
 
 
 class TemporalParams():
-    def __init__(self, scheduled_list : list, actual_known_list : list, static_params: StaticParams):
+    def __init__(self, actual_known_list : list, static_params: StaticParams):
         ''' Contains Temporal Parameters
         Args:
             actual_known_list : known actual payments (and np.nans for unknown)
         '''
-        self.static_params = static_params
         self.periods = list(range(1, static_params.term + 1))
         while len(actual_known_list) < static_params.term:
             actual_known_list.append(np.nan)
-        actual_known_list = actual_known_list[:self.static_params.term]
+        actual_known_list = actual_known_list[:static_params.term]
         self.actual_known_list = np.array(actual_known_list)
 
         self.scheduled_percent = self.scheduled_list / static_params.contract_sum
@@ -221,9 +220,11 @@ class Applicator():
         state = TemporalState()
         self.init_state(state, static_params)
         for id_period in range(1, sttic_params.term + 1):
-            features = [static_params.term, static_params.contract_sum, static_params.gender,
-                    static_params.age, static_params.loan_to_income, static_params.payment_to_income,
-                    static_params.downpayment, static_params.car_category, static_params.grace_period,
+            features = [static_params.term, static_params.contract_sum, static_params.idx_gender,
+                    static_params.age, static_params.loan_to_income,
+                    static_params.payment_to_income,
+                    static_params.downpayment, static_params.car_category,
+                    static_params.grace_period,
                     static_params.rate_change_after_grace, id_period, state.pay_scheduled,
                     state.accumulated_pay_scheduled, state.accumulated_pay_actual,
                     state.avg_pay_scheduled, state.avg_pay_actual, state.last_actual_pay,
@@ -253,7 +254,8 @@ class Applicator():
         self.transform_output(output, static_params, temporal_params)
         return output
 
-    def transform_output(self, output: OutputSeries, static_params: StaticParams, temporal_params: TemporalParams):
+    def transform_output(self, output: OutputSeries,
+            static_params: StaticParams, temporal_params: TemporalParams):
         pass
 
 
