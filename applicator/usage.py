@@ -15,6 +15,7 @@ def main():
 
     fixed_data = data_join[data_join['CONTRACT_ID'] == data_join['CONTRACT_ID'][1]]
 
+    term = fixed_data['TERM'][0]
     contract_sum            = fixed_data['CONTRACT_SUM'][0]
     gender                  = fixed_data['GENDER'][0]
     age                     = fixed_data['AGE'][0]
@@ -45,13 +46,13 @@ def main():
     new_series = applicator.generate_new_series(static_params, temporal_params)
     complete_series = applicator.complete_source_series(static_params, temporal_params)
     by_one_series = applicator.by_one_series(static_params, temporal_params)
-    cluster = get_cluster(static_params)
+    cluster = applicator.get_cluster(static_params)
 
     print("Case A")
     print(cluster)
-    print(complete_series)
-    print(by_one_series)
-    print(new_series)
+    print(complete_series.percent_series)
+    print(by_one_series.percent_series)
+    print(new_series.percent_series)
 
     # Test Case B.
     static_params = StaticParams(term, contract_sum,
@@ -64,13 +65,13 @@ def main():
     new_series = applicator.generate_new_series(static_params, temporal_params)
     complete_series = applicator.complete_source_series(static_params, temporal_params)
     by_one_series = applicator.by_one_series(static_params, temporal_params)
-    cluster = get_cluster(static_params)
+    cluster = applicator.get_cluster(static_params)
 
     print("Case B")
     print(cluster)
-    print(complete_series)
-    print(by_one_series)
-    print(new_series)
+    print(complete_series.percent_series)
+    print(by_one_series.percent_series)
+    print(new_series.percent_series)
 
 
 if __name__ == '__main__':
