@@ -15,7 +15,7 @@ def main():
 
     fixed_data = data_join[data_join['CONTRACT_ID'] == data_join['CONTRACT_ID'][1]]
 
-    term = fixed_data['TERM'][0]
+    term                    = fixed_data['TERM'][0]
     contract_sum            = fixed_data['CONTRACT_SUM'][0]
     gender                  = fixed_data['GENDER'][0]
     age                     = fixed_data['AGE'][0]
@@ -39,9 +39,9 @@ def main():
     temporal_params = TemporalParams(known_list, static_params)
 
     loader = PickleLoader()
-    clf, est = loader.load('./pickle_data/rf_clf.pickle', './pickle_data/rf_est.pickle')
+    clf, est = loader.load('./pickle_data/rf_clf_7.pickle', './pickle_data/rf_est.pickle')
 
-    applicator = Applicator(clf, est, 'km')
+    applicator = Applicator(clf, est, 'km_8')
 
     new_series = applicator.generate_new_series(static_params, temporal_params)
     complete_series = applicator.complete_source_series(static_params, temporal_params)

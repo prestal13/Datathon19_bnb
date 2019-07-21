@@ -133,6 +133,7 @@ class Applicator():
         Applies learned algorithms.
         Args:
             way of clustering,  should be one of: [sdtw_km, dba_km, km, gak_km, ks]
+                for short list, one of [km_8, km_16] for long list
             est : regressor
             dict_clf : dict from way to classifier
         '''
@@ -154,7 +155,7 @@ class Applicator():
         """ Generates series with one-predict shift """
         return self.make_series(static_params, temporal_params, True, False)
 
-    def get_cluster(self, static_params: StaticParams):
+    def get_cluster(self, static_params: StaticParams, long_list=True):
         """ Returns the cluster """
         features = [static_params.term, static_params.contract_sum,
                 static_params.idx_gender,
@@ -162,6 +163,8 @@ class Applicator():
                 static_params.payment_to_income, static_params.downpayment,
                 static_params.car_category, static_params.grace_period,
                 static_params.rate_change_after_grace]
+        if long_list:
+            features += [static_params.ratio_10, static_params.ratio_20, static_params.ratio_30, static_params.ratio_40, static_params.before_grace]
         return self.clf.predict(np.array([features]))[0]
 
     # The following methods are just PRIVATE (though not underscored _private_method due lack of time)
